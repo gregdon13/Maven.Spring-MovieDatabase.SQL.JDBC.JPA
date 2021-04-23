@@ -3,9 +3,15 @@ package io.zipcoder.service;
 import io.zipcoder.models.Person;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Timestamp;
 import java.util.*;
 
+
+//Why the hell are you not using JPA crud repository????
 @Service
 public class PersonService {
     JdbcTemplate jdbcTemplate = new JdbcTemplate();
@@ -16,7 +22,7 @@ public class PersonService {
         return jdbcTemplate.query(sql,
                 (rs, rowNum) ->
                 new Person(
-                        rs.getLong("id"),
+                        rs.getInt("id"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         rs.getString("mobile"),
@@ -31,12 +37,28 @@ public class PersonService {
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, Person.class);
     }
 
-    public int insertPerson(String firstName, String lastName, String mobile, Date birthday, Integer homeId) {
+    //SKETCHY...
+    public Person insertPerson(@RequestBody Person person) {
         String sql = "INSERT INTO PERSON (FIRST_NAME, LAST_NAME, MOBILE, BIRTHDAY, HOME_ID) VALUES (?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, firstName, lastName, mobile, birthday, homeId);
+        String returnSql = "SELECT * FROM PERSON WHERE ID = ?";
+        int newId = jdbcTemplate.update(sql, person.getFirstName(), person.getLastName(), person.getMobile(), person.getBirthday(), person.getHomeId());
+        return jdbcTemplate.queryForObject(returnSql, new Object[]{newId}, Person.class);
     }
 
-    //NEEDS TO BE WRITTEN
+    public Person updatePerson(@RequestBody Person person) {
+        String sql = "UPDATE PERSON SET FIRST_NAME = ?, LAST_NAME = ?, " +
+                "MOBILE = ?, BIRTHDAY = ?, HOME_ID = ? WHERE ID = ?";
+        jdbcTemplate.update(sql, person.getFirstName(), person.getLastName(),
+                person.getMobile(), person.getBirthday(), person.getHomeId(), person.getId());
+        String returnSql = "SELECT * FROM PERSON WHERE ID = ?";
+        return jdbcTemplate.queryForObject(returnSql, new Object[]{person.getId()}, Person.class);
+    }
+
+    public void removePerson(Integer id) {
+        String sql = "delete from person where id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
     public void removeListOfPerson(List<Person> personList) {
         String sql = "delete from person where id = ?";
         for (Person p : personList) {

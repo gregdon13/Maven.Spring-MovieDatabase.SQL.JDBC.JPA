@@ -11,7 +11,7 @@ import java.util.Date;
 public class Person {
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String mobile;
@@ -20,7 +20,7 @@ public class Person {
 
     public Person() {}
 
-    public Person(Long id, String firstName, String lastName, String mobile, Date birthday, Integer homeId) {
+    public Person(Integer id, String firstName, String lastName, String mobile, Date birthday, Integer homeId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,7 +29,7 @@ public class Person {
         this.homeId = homeId;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
