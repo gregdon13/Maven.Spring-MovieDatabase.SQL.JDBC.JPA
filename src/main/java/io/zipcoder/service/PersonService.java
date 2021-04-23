@@ -37,7 +37,12 @@ public class PersonService {
     }
 
     //NEEDS TO BE WRITTEN
-    public void removeListOfPerson() {}
+    public void removeListOfPerson(List<Person> personList) {
+        String sql = "delete from person where id = ?";
+        for (Person p : personList) {
+            jdbcTemplate.update(sql, p.getId());
+        }
+    }
 
     public Person findByFirstName(String firstName) {
         String sql = "Select * from person where firstName = ?";
