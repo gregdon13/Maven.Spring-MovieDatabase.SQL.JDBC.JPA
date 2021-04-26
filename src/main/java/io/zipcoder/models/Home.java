@@ -11,4 +11,24 @@ public class Home {
     Integer id;
     String address;
     String homeNumber;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getHomeNumber() {
+        return homeNumber;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setHomeNumber(String homeNumber) {
+        this.homeNumber = homeNumber;
+    }
 }

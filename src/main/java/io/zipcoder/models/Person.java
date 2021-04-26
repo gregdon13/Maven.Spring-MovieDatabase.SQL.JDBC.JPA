@@ -9,9 +9,8 @@ import java.util.Date;
 
 @Entity
 public class Person {
-    @Id
-    @GeneratedValue
-    private Integer id;
+
+    private @Id @GeneratedValue Integer id;
     private String firstName;
     private String lastName;
     private String mobile;

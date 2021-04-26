@@ -1,13 +1,11 @@
 package io.zipcoder.controller;
 import io.zipcoder.models.Person;
 import io.zipcoder.service.PersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +13,7 @@ import java.util.Map;
 public class PersonController {
     private final PersonService personService;
 
+    @Autowired
     public PersonController(PersonService personService) {
         this.personService = personService;
     }
@@ -56,7 +55,7 @@ public class PersonController {
     }
 
     @GetMapping("/people/surname/{lastName}")
-    public ResponseEntity<Iterable<Person>> findByLastName(String lastName) {
+    public ResponseEntity<Iterable<Person>> findByLastName(@PathVariable String lastName) {
         return new ResponseEntity<>(personService.findAllWith(lastName), HttpStatus.OK);
     }
 

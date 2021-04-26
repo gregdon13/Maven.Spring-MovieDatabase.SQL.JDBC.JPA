@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Timestamp;
 import java.util.*;
 
 
-//Why the hell are you not using JPA crud repository????
-@Service
+@RestController
 public class PersonService {
     private final PersonRepository personRepo;
 
@@ -47,6 +47,12 @@ public class PersonService {
         holder.setMobile(person.getMobile());
         holder.setBirthday(person.getBirthday());
         holder.setHomeId(person.getHomeId());
+        return personRepo.save(holder);
+    }
+
+    public Person addToHouse(@PathVariable Integer personId, @PathVariable Integer homeId) {
+        Person holder = personRepo.findOne(personId);
+        holder.setHomeId(homeId);
         return personRepo.save(holder);
     }
 
@@ -85,4 +91,6 @@ public class PersonService {
         }
         return countMap;
     }
+
+
 }
